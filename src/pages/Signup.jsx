@@ -2,6 +2,7 @@ import { BookOpen, Link } from "lucide-react"
 import ButtonWithIcon from "../components/ButtonWithIcon"
 import Input from "../components/Input"
 import { useState } from "react"
+import LoginCardHeader from "../components/LoginCardHeader"
 
 
 const Signup = () => {
@@ -11,11 +12,7 @@ const Signup = () => {
     return (
         <main className="bg-primary h-screen w-full flex items-center justify-center">
             <section className="login-card">
-                <div className="flex-center flex-col space-y-2">
-                    <BookOpen color="#267e7c" size={54} />
-                    <h1>Book Log & Review</h1>
-                    <p className="text-muted text-center">Track your reading progess and share your thoughts.</p>
-                </div>
+                <LoginCardHeader />
 
                 <ButtonWithIcon imgPath={'/google.png'} text={'Continue With Google'} />
 
