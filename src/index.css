@@ -11,6 +11,18 @@ body {
     font-family: 'Inter Variable', sans-serif;
 }
 
+.hide-scrollbar {
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE/Edge */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari, Opera */
+}
+
 @layer components {
     .login-card {
         @apply w-[600px] h-[600px] rounded-2xl bg-white shadow-2xl p-4 md:p-8 max-md:shadow-none;
@@ -22,6 +34,14 @@ body {
 
     .btn-primary {
         @apply px-4 py-3 border-none mx-auto bg-accent text-white rounded-xl flex items-center justify-center gap-3 cursor-pointer;
+    }
+
+    .btn-light {
+        @apply px-4 py-3 mx-auto border border-accent text-accent rounded-xl flex items-center justify-center gap-3 cursor-pointer;
+    }
+
+    .header {
+        @apply bg-primary shadow-md flex items-center justify-between;
     }
 }
 
@@ -40,5 +60,9 @@ body {
 
     input {
         @apply px-4 py-3 border border-gray-300 outline-none mx-auto mt-4 rounded-xl focus:border focus:border-accent transition ease-in;
+    }
+
+    .section-padding {
+        @apply md:px-10 px-4 py-5;
     }
 }
