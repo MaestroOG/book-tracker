@@ -5,6 +5,7 @@
     --color-accent: #267E7C;
     --color-heading: #27282B;
     --color-muted: #6a7282;
+    --color-warning: #E8646D;
 }
 
 body {
@@ -36,6 +37,10 @@ body {
         @apply px-4 py-3 border-none mx-auto bg-accent text-white rounded-xl flex items-center justify-center gap-3 cursor-pointer;
     }
 
+    .btn-delete {
+        @apply px-4 py-3 border-none mx-auto bg-warning text-white rounded-xl flex items-center justify-center gap-3 cursor-pointer;
+    }
+
     .btn-light {
         @apply px-4 py-3 mx-auto border border-accent text-accent rounded-xl flex items-center justify-center gap-3 cursor-pointer;
     }
@@ -58,7 +63,8 @@ body {
         @apply flex items-center justify-center;
     }
 
-    input {
+    input,
+    textarea {
         @apply px-4 py-3 border border-gray-300 outline-none mx-auto mt-4 rounded-xl focus:border focus:border-accent transition ease-in;
     }
 

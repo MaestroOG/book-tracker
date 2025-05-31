@@ -1,12 +1,8 @@
 import BookCard from "../components/BookCard"
-import Header from "../components/Header"
-import Navbar from "../components/Navbar"
 
 const Home = () => {
     return (
         <main>
-            <Header />
-
             <section className="section-padding mt-10">
                 <h1>Your Reads</h1>
                 <div className="overflow-x-auto whitespace-nowrap hide-scrollbar">
@@ -26,8 +22,6 @@ const Home = () => {
                     </div>
                 </div>
             </section>
-
-            <Navbar />
         </main>
     )
 }
