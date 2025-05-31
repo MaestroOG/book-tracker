@@ -23,12 +23,24 @@ const Signup = () => {
             alert(error?.message)
         }
     }
+
+    const signUpWithGoogle = async () => {
+        try {
+            const user = await firebase.signUpWithGoogle()
+            if (user?.user) {
+                navigate('/')
+            }
+        } catch (error) {
+            alert(error?.message)
+        }
+
+    }
     return (
         <main className="bg-primary h-screen w-full flex items-center justify-center">
             <section className="login-card">
                 <LoginCardHeader />
 
-                <ButtonWithIcon imgPath={'/google.png'} text={'Continue With Google'} />
+                <ButtonWithIcon imgPath={'/google.png'} text={'Continue With Google'} onClick={signUpWithGoogle} />
 
 
                 <div className="w-full mt-6 flex items-center gap-4">

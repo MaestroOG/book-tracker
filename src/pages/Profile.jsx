@@ -20,9 +20,9 @@ const Profile = () => {
     return (
         <main className="bg-primary mt-12 w-full flex items-center justify-center">
             <section className="login-card flex flex-col items-center justify-center space-y-6">
-                <img src="https://avatar.iran.liara.run/public/20" alt="avatar" width={120} height={120} loading="eager" />
+                <img src={user?.photoURL || "https://avatar.iran.liara.run/public/20"} alt="avatar" className="rounded-full" width={120} height={120} loading="eager" />
                 <div className="text-center">
-                    <h1>{user?.email.slice(0, 6)}</h1>
+                    <h1>{user?.displayName || user?.email.slice(0, 6)}</h1>
                     <p className="text-muted">{user?.email}</p>
                 </div>
                 <div className="flex items-center gap-5">
