@@ -7,6 +7,7 @@ import Profile from './pages/Profile'
 import Header from './components/Header'
 import Navbar from './components/Navbar'
 import BookPage from './pages/BookPage'
+import ProtectionRoute from './pages/ProtectionRoute'
 
 const App = () => {
   const location = useLocation();
@@ -14,14 +15,26 @@ const App = () => {
     <>
       {location.pathname !== '/profile' && <Header />}
       <Routes>
-        <Route path='/' element={<Home />} />
+        <Route path='/' element={
+          <ProtectionRoute>
+            <Home />
+          </ProtectionRoute>
+        } />
         <Route path='/login' element={<Login />} />
         <Route path='/sign-up' element={<Signup />} />
-        <Route path='/add-book' element={<AddBook />} />
+        <Route path='/add-book' element={
+          <ProtectionRoute>
+            <AddBook />
+          </ProtectionRoute>
+        } />
         <Route path='/book/:id' element={<BookPage />} />
-        <Route path='/profile' element={<Profile />} />
+        <Route path='/profile' element={
+          <ProtectionRoute>
+            <Profile />
+          </ProtectionRoute>
+        } />
       </Routes>
-      <Navbar />
+      {location.pathname !== '/login' && location.pathname !== '/sign-up' && <Navbar />}
     </>
   )
 }

@@ -1,13 +1,27 @@
 import { useState } from "react"
-import { BookOpen } from "lucide-react"
 import ButtonWithIcon from "../components/ButtonWithIcon"
 import Input from "../components/Input"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import LoginCardHeader from "../components/LoginCardHeader"
+import { useFirebase } from "../context/Firebase"
 
 const Login = () => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const firebase = useFirebase()
+    const navigate = useNavigate()
+
+    const handleSignInSubmit = async (e) => {
+        e.preventDefault()
+        try {
+            const user = await firebase.signInWithEmailPass(email, password);
+            if (user) {
+                navigate('/')
+            }
+        } catch (error) {
+            alert(error?.message)
+        }
+    }
     return (
         <main className="bg-primary h-screen w-full flex items-center justify-center">
             <section className="login-card">
@@ -22,7 +36,7 @@ const Login = () => {
                     <hr className="border-none h-0.5 bg-gray-200 w-2/3" />
                 </div>
 
-                <form className="mt-4">
+                <form className="mt-4" onSubmit={(e) => handleSignInSubmit(e)}>
                     <Input type='email' placeholder='Email Address' className={'w-full'} value={email} setValue={setEmail} />
                     <Input type='password' placeholder='Password' className={'w-full'} value={password} setValue={setPassword} />
                     <button className="btn-primary mt-5 w-full" type="submit">Log In</button>

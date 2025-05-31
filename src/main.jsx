@@ -4,11 +4,14 @@ import './index.css'
 import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom'
 import '@fontsource-variable/inter';
+import FirebaseProvider from './context/Firebase.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
-      <App />
+      <FirebaseProvider>
+        <App />
+      </FirebaseProvider>
     </BrowserRouter>
   </StrictMode>,
 )

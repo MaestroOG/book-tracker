@@ -1,4 +1,19 @@
+import { useNavigate } from "react-router-dom"
+import { useFirebase } from "../context/Firebase"
+
 const Profile = () => {
+    const firebase = useFirebase()
+    const navigate = useNavigate()
+
+    const handleLogoutClick = async () => {
+        try {
+            await firebase.signOut()
+            navigate('/')
+        } catch (error) {
+            alert(error?.message)
+        }
+    }
+
     return (
         <main className="bg-primary mt-12 w-full flex items-center justify-center">
             <section className="login-card flex flex-col items-center justify-center space-y-6">
@@ -8,7 +23,7 @@ const Profile = () => {
                     <p className="text-muted">johndoe@gmail.com</p>
                 </div>
                 <div className="flex items-center gap-5">
-                    <button className="btn-primary">Logout</button>
+                    <button className="btn-primary" onClick={handleLogoutClick}>Logout</button>
                     <button className="btn-light">Edit Profile</button>
                 </div>
             </section>
