@@ -1,13 +1,21 @@
 import { useState } from 'react'
 import Input from '../components/Input'
+import { useFirebase } from '../context/Firebase'
 
 const AddBook = () => {
     const [bookName, setBookName] = useState("")
     const [authorName, setAuthorName] = useState("")
     const [review, setReview] = useState("")
+    const { user, addBookForUser } = useFirebase();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        const result = await addBookForUser(user.uid, {
+            bookName: bookName,
+            authorName: authorName,
+            review: review
+        });
+        console.log(result)
     }
     return (
         <>

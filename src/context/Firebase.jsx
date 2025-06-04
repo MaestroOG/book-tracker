@@ -7,7 +7,8 @@ import {
     signInWithPopup
 } from "firebase/auth";
 import { createContext, useContext, useEffect, useState } from "react";
-import { auth } from "../utils/firebase";
+import { auth, firestore } from "../utils/firebase";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 
 
 const FirebaseContext = createContext(null)
@@ -32,6 +33,13 @@ const FirebaseProvider = ({ children }) => {
 
     const signUpWithEmailPass = async (email, password) => {
         const user = await createUserWithEmailAndPassword(auth, email, password)
+
+        await setDoc(doc(firestore, 'users', user.user.uid), {
+            uid: user.user.uid,
+            email: user.user.email,
+            createdAt: new Date()
+        })
+
         return user
     }
 
@@ -48,8 +56,18 @@ const FirebaseProvider = ({ children }) => {
         const user = await signInWithPopup(auth, googleProvider)
         return user;
     }
+
+    // Book CRUD Functions
+
+    const addBookForUser = async (userID, bookData) => {
+        const userBooksRef = collection(firestore, 'users', userID, 'books');
+        await addDoc(userBooksRef, {
+            ...bookData,
+            createdAt: new Date()
+        })
+    }
     return (
-        <FirebaseContext.Provider value={{ signUpWithEmailPass, user, signInWithEmailPass, signOut, signUpWithGoogle }}>
+        <FirebaseContext.Provider value={{ signUpWithEmailPass, user, signInWithEmailPass, signOut, signUpWithGoogle, addBookForUser }}>
             {loading ? <div className="h-screen w-full flex items-center justify-center">Loading...</div> : children}
         </FirebaseContext.Provider>
     )
