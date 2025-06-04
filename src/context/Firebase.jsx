@@ -19,10 +19,12 @@ const googleProvider = new GoogleAuthProvider()
 const FirebaseProvider = ({ children }) => {
 
     const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             setUser(user || null);
+            setLoading(false)
         })
 
         return () => unsubscribe()
@@ -48,7 +50,7 @@ const FirebaseProvider = ({ children }) => {
     }
     return (
         <FirebaseContext.Provider value={{ signUpWithEmailPass, user, signInWithEmailPass, signOut, signUpWithGoogle }}>
-            {children}
+            {loading ? <div className="h-screen w-full flex items-center justify-center">Loading...</div> : children}
         </FirebaseContext.Provider>
     )
 }

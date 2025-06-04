@@ -4,7 +4,7 @@ import { Navigate } from 'react-router-dom'
 const ProtectionRoute = ({ children }) => {
     const { user } = useFirebase()
 
-    if (user === null) {
+    if (!user) {
         return <Navigate to={'/login'} />
     }
     return children;
