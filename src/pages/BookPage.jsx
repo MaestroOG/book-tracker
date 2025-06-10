@@ -1,15 +1,51 @@
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
+import { doc, getDoc } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import { useFirebase } from "../context/Firebase";
+import { firestore } from "../utils/firebase";
 
 const BookPage = () => {
     const navigate = useNavigate();
+    const { id } = useParams()
+    const [book, setBook] = useState({})
+    const { user } = useFirebase()
+
+    const getBook = async () => {
+        try {
+            const bookRef = doc(firestore, 'users', user.uid, 'books', id)
+            const bookSnap = await getDoc(bookRef);
+
+            if (bookSnap.exists()) {
+                const data = {
+                    id: bookSnap.id,
+                    ...bookSnap.data()
+                };
+                setBook(data);
+
+                console.log("Book fetched:", data);
+            } else {
+                console.log("Book not found")
+            }
+
+        } catch (error) {
+            alert(error?.message)
+        }
+    }
+
+    useEffect(() => {
+        if (user?.uid && id) {
+            getBook()
+        }
+    }, [user, id])
+
     return (
         <main className="section-padding mt-5">
-            <div className="lg:flex items-start gap-8">
-                <img src="/book-cover.jpg" alt="book-cover" width={200} height={350} loading="eager" className="mx-auto shadow-lg mb-6 lg:mb-0" />
-                <div className="pb-12">
-                    <h1 className="font-medium">Notes from Underground</h1>
-                    <p className="text-muted mt-1 text-lg">Fyodor Dostoevsky</p>
-                    <p className="mt-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia tempore autem dolores? Atque saepe quis voluptatem dolorum. Quis officia saepe cupiditate, iure dolorum adipisci, veritatis, voluptas id natus similique et rerum est voluptatum incidunt neque provident impedit. Delectus deleniti enim autem consequuntur dolor, assumenda ducimus est debitis veritatis distinctio. Adipisci quaerat quam accusamus quae alias magnam deleniti. Molestiae sequi magni, aliquid animi repudiandae earum porro ipsum nihil mollitia repellat. Adipisci sapiente perferendis facere autem laborum impedit enim reiciendis suscipit amet? Sed blanditiis doloribus reprehenderit inventore, quis ullam voluptas vel! Laboriosam beatae inventore aliquid? Nobis dolor quisquam laudantium hic labore temporibus aspernatur ullam officiis sequi. Cumque, labore voluptatum. Consequatur voluptatibus, ut eligendi a quasi eum distinctio consectetur eaque dolor autem blanditiis beatae minima maxime, aspernatur maiores debitis? Ab doloribus, minima quos vel odio nam, dolorum eveniet, facilis beatae fugit totam soluta?</p>
+            <div className="lg:flex items-start gap-8 w-full">
+                <img src="/book-cover.jpg" alt="book-cover" width={200} height={350} loading="eager" className="w-1/4 mx-auto shadow-lg mb-6 lg:mb-0" />
+                <div className="pb-12 w-3/4">
+                    <h1 className="font-medium">{book?.bookName || "Book Name"}</h1>
+                    <p className="text-muted mt-1 text-lg">{book?.authorName || "Author Name"}</p>
+                    <p className="mt-4">{book?.review || "No Review was provided"}</p>
                 </div>
             </div>
             <div className="mt-5">

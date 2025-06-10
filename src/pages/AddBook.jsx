@@ -1,21 +1,27 @@
 import { useState } from 'react'
 import Input from '../components/Input'
 import { useFirebase } from '../context/Firebase'
+import { useNavigate } from 'react-router-dom'
 
 const AddBook = () => {
     const [bookName, setBookName] = useState("")
     const [authorName, setAuthorName] = useState("")
     const [review, setReview] = useState("")
     const { user, addBookForUser } = useFirebase();
+    const navigate = useNavigate()
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const result = await addBookForUser(user.uid, {
-            bookName: bookName,
-            authorName: authorName,
-            review: review
-        });
-        console.log(result)
+        try {
+            const result = await addBookForUser(user.uid, {
+                bookName: bookName,
+                authorName: authorName,
+                review: review
+            });
+            navigate('/')
+        } catch (error) {
+            alert(error?.message)
+        }
     }
     return (
         <>
