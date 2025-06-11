@@ -8,7 +8,7 @@ import {
 } from "firebase/auth";
 import { createContext, useContext, useEffect, useState } from "react";
 import { auth, firestore } from "../utils/firebase";
-import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, setDoc } from "firebase/firestore";
 
 
 const FirebaseContext = createContext(null)
@@ -53,8 +53,27 @@ const FirebaseProvider = ({ children }) => {
     }
 
     const signUpWithGoogle = async () => {
-        const user = await signInWithPopup(auth, googleProvider)
-        return user;
+        try {
+            const result = await signInWithPopup(auth, googleProvider);
+            const user = result.user;
+
+            const userRef = doc(firestore, 'users', user?.uid);
+
+            const snapshot = await getDoc(userRef);
+
+            if (!snapshot.exists()) {
+                await setDoc(userRef, {
+                    uid: user?.uid,
+                    name: user?.displayName || "",
+                    email: user?.email,
+                    createdAt: new Date()
+                })
+            }
+
+            return user;
+        } catch (error) {
+            alert(error?.message)
+        }
     }
 
     // Book CRUD Functions

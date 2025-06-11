@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom"
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, deleteDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useFirebase } from "../context/Firebase";
 import { firestore } from "../utils/firebase";
@@ -32,6 +32,22 @@ const BookPage = () => {
         }
     }
 
+    const deleteBook = async () => {
+        if (!user?.uid || !id) return;
+
+        const confirmDel = window.confirm('Do you really want to delete this book?');
+        if (!confirmDel) return;
+
+        try {
+            const bookRef = doc(firestore, 'users', user?.uid, 'books', id);
+            await deleteDoc(bookRef);
+            alert('Book Deleted Successfully!');
+            navigate('/')
+        } catch (error) {
+            alert(error?.message)
+        }
+    }
+
     useEffect(() => {
         if (user?.uid && id) {
             getBook()
@@ -50,7 +66,7 @@ const BookPage = () => {
             </div>
             <div className="mt-5">
                 <button className="btn-light float-right ml-4" onClick={() => navigate('/')}>Back</button>
-                <button className="btn-delete float-right">Delete</button>
+                <button className="btn-delete float-right" onClick={deleteBook}>Delete</button>
             </div>
         </main>
     )

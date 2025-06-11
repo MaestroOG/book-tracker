@@ -27,7 +27,7 @@ const Signup = () => {
     const signUpWithGoogle = async () => {
         try {
             const user = await firebase.signUpWithGoogle()
-            if (user?.user) {
+            if (user) {
                 navigate('/')
             }
         } catch (error) {
